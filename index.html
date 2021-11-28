@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="style.css" rel="stylesheet">
+    <title>gport</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap" rel="stylesheet"> 
+</head>
+<body>
+    <!--Tabs-->
+    <div id="tab-container">
+        <button id="home-tab" class="tab" onclick="switchTab('home')">HOME</button>
+        <button id="calc-tab" class="tab" onclick="switchTab('calc')">CALCULATOR</button>
+        <button id="snake-tab" class="tab" onclick="switchTab('snake')">SNAKE</button>
+        <button id="shooter-tab" class="tab" onclick="switchTab('shooter')">SHOOTER</button>
+    </div>
+    <!--Tab contents-->
+    <div id="content">
+        <div id="home" class="tabcontent">
+            <p1>Welcome!</p1>
+        </div>
+        <div id="calc" class="tabcontent">
+            <div id="calculator">
+                <div class="seen">
+                    <div class="previous calcText" id="previous"></div>
+                    <div class="current calcText" id="current"></div>
+                </div>
+                <button class="spawn-two calcButton calcText" onclick="clearIt()" id="AC">AC</button>
+                <button class="calcButton calcText" onclick="deleteIt()" id="DEL">DEL</button>
+                <button class="calcButton calcText" onclick="operator('/')" id="divide">÷</button>
+                <button class="calcButton calcText" onclick="number('1')" id="one">1</button>
+                <button class="calcButton calcText" onclick="number('2')" id="two">2</button>
+                <button class="calcButton calcText" onclick="number('3')" id="three"> 3</button>
+                <button class="calcButton calcText" onclick="operator('*')" id="mulitply">*</button>
+                <button class="calcButton calcText" onclick="number('4')" id="four">4</button>
+                <button class="calcButton calcText" onclick="number('5')" id="five">5</button>
+                <button class="calcButton calcText" onclick="number('6')" id="six">6</button>
+                <button class="calcButton calcText" onclick="operator('+')" id="plus">+</button>
+                <button class="calcButton calcText" onclick="number('7')" id="seven">7</button>
+                <button class="calcButton calcText" onclick="number('8')" id="eight">8</button>
+                <button class="calcButton calcText" onclick="number('9')" id="nine">9</button>
+                <button class="calcButton calcText" onclick="negativeOp('-')" id="minus">-</button>
+                <button class="calcButton calcText" onclick="number('.')" id="point">.</button>
+                <button class="calcButton calcText" onclick="number('0')" id="zero">0</button>
+                <button class="calcButton calcText spawn-two equals" onclick="equality()" id="equals">=</button>
+            </div>
+        </div>
+        <div id="snake" class="tabcontent">
+        <canvas id="snake-board"></canvas>
+        </div>
+        <div id ="shooter" class="tabcontent">
+        <canvas id="shooter-board"></canvas>
+        </div>
+    </div>
+</body>
+<script src="script.js"></script>
+</html>

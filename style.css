@@ -1,0 +1,100 @@
+html,
+body {
+    padding: 0;
+    margin: 0;
+}
+
+html {
+    overflow: hidden;
+}
+#tab-container {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-evenly;
+    background-color: black;
+}
+
+.tab {
+    flex-grow: 1;
+    background-color: black;
+    color: white;
+    border-radius: 30px;
+    font-family: 'Quicksand', sans-serif;
+    padding: 1px;
+    transition-duration: 0.8s; 
+    height: 40px;
+}
+
+.tab:hover {
+    background-color: rgb(218, 218, 218);
+    color: black;
+}
+
+#content {
+    display: flex;
+}
+
+#calc {
+    justify-content: center;
+    align-items: center;
+    background-color: #081b33;
+    width: 100vw;
+    height: 100vh;
+}
+
+.calcText {
+    font-family: 'Quicksand', sans-serif;
+    color: white;
+}
+#calculator {
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    min-height: calc(100vh - 40px);
+    grid-template-columns: repeat(4, 100px);
+    grid-template-rows: minmax(120px, auto) repeat(5, 100px);
+}
+.calcButton {
+    background-color: black;
+    box-sizing: border-box;
+    cursor: pointer;
+    border: 1px solid white;
+    outline: none;
+    transition-duration: 0.3s; 
+    font-size: 1.5em;
+}
+.calcButton:hover {
+    background-color: #081b33;
+}
+.spawn-two {
+    grid-column: span 2;
+}
+
+.seen {
+    grid-column: 1 / -1;
+    background-color: black;
+    border: 1px solid white;
+    outline: none;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    flex-direction: column;
+    padding: 10px;
+    word-wrap: break-word;
+    word-break: break-all;
+}
+
+.previous {
+    font-size: 1.5rem;
+}
+.current {
+    font-size: 2.5rem;
+}
+#shooter-board {
+    background-color: black;
+}
+
+#snake-board {
+    background-color: blue;
+}
+
