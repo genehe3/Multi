@@ -51,8 +51,8 @@ html {
     justify-content: center;
     align-content: center;
     min-height: calc(100vh - 40px);
-    grid-template-columns: repeat(4, 100px);
-    grid-template-rows: minmax(120px, auto) repeat(5, 100px);
+    grid-template-columns: repeat(4, calc(5vw + 30px));
+    grid-template-rows: minmax(15vh, auto) repeat(5, 13vh);
 }
 .calcButton {
     background-color: black;
@@ -85,10 +85,10 @@ html {
 }
 
 .previous {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
 }
 .current {
-    font-size: 2.5rem;
+    font-size: 2.0rem;
 }
 #shooter-board {
     background-color: black;
