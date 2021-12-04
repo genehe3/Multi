@@ -2,10 +2,17 @@ html,
 body {
     padding: 0;
     margin: 0;
+    background-color: black;
 }
 
 html {
     overflow: hidden;
+}
+
+.flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 #tab-container {
     display: flex;
@@ -32,6 +39,8 @@ html {
 
 #content {
     display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #calc {
@@ -90,11 +99,41 @@ html {
 .current {
     font-size: 2.0rem;
 }
+/*end of calculator styling*/
+#snake-board {
+    background-color: rgb(40, 63, 44);
+} 
+
+.snake-buttons {
+    padding: 7px;
+}
+
+.snake-button {
+    width: 99vw;
+    height: 60px;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 3vh;
+    background-color: rgba(255, 255, 255, 0.781);
+    border: 1px solid black;
+    border-radius: 70px 70px 70px 70px;
+    transition-duration: 500ms;
+}
+
+#snake-pause {
+    display: none;
+}
+
+#snake-settings {
+    display: none;
+}
+
+.snake-button:hover {
+    background-color: rgba(230, 180, 180, 0.493);
+}
+/*end of snake styling*/
 #shooter-board {
     background-color: black;
 }
 
-#snake-board {
-    background-color: blue;
-}
+
 

@@ -7,7 +7,7 @@ const switchTab = tab => {
     }
     document.getElementById(tab).style.display = "";
 } //tab-switching function, working
-document.getElementById('calc-tab').click();//sets default page (home) on load
+document.getElementById('snake-tab').click();//sets default page (home) on load
 
 //individual scripts for each 'page' 
 //first: calculator
@@ -89,8 +89,45 @@ const deleteIt = () => {
 //second: snake
 let snakeBoard = document.getElementById('snake-board')
 let cSna = snakeBoard.getContext('2d');
-snakeBoard.width = window.innerWidth;
-snakeBoard.height = window.innerHeight;
+let grid = 30;
+let paused = true;
+let snakeHead = []; //x,y co-ordinates for first block
+let snakeBody = []; //multiple x,y co-ordinates for rest of body
+const greatestSize = (direction) => {
+    return parseInt(direction / grid) * grid
+}
+snakeBoard.width = greatestSize(window.innerWidth); //max size in order for proper movement
+snakeBoard.height = greatestSize(window.innerHeight) - 90; //same thing but with bottom bar for controls
+
+const draw = (x, y) => {
+    cSna.fillStyle = 'rgba(255, 0, 0, 0.75)' 
+    cSna.fillRect(x, y, grid, grid);
+}
+
+//script below is for buttons under the canvas
+document.getElementById('snake-start').addEventListener('click', () => {
+    document.getElementById('snake-start').style.width = '33vw'
+    document.getElementById('snake-settings').style.width = '33vw'
+    document.getElementById('snake-settings').style.display = 'block'
+    document.getElementById('snake-pause').style.width = '33vw'
+    document.getElementById('snake-pause').style.display = 'block'
+    paused = false
+})
+
+document.getElementById('snake-pause').addEventListener('click', () => {
+    if (paused === false) {    
+        document.getElementById('snake-pause').style.width = '99vw'
+        document.getElementById('snake-settings').style.display = 'none'
+        document.getElementById('snake-start').style.display = 'none'
+        paused = true;
+    } else {
+        document.getElementById('snake-pause').style.width = '33vw'
+        document.getElementById('snake-settings').style.display = 'block'
+        document.getElementById('snake-start').style.display = 'block'
+        paused = false
+    }
+})
+draw(snakeBoard.width/2, snakeBoard.height/2);
 //third: shooter
 let shooterBoard = document.getElementById('shooter-board')
 let cSho = shooterBoard.getContext('2d');
