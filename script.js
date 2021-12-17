@@ -10,7 +10,7 @@ const switchTab = tab => {
     active = tab;
     console.log(active)
 } //tab-switching function, working
-document.getElementById('snake-tab').click();//sets default page (home) on load
+document.getElementById('shooter-tab').click();//sets default page (home) on load
 //function for random color (rgba) ==> rgba(0-255, 0-255, 0-255, 0-1)
 const randCol = () => {
     let r = Math.round, rr = Math.random, rrr = 255;
@@ -370,8 +370,30 @@ document.addEventListener('keydown', key => {
     }
 })
 
+
 //third: shooter
 let shooterBoard = document.getElementById('shooter-board')
 let cSho = shooterBoard.getContext('2d');
 shooterBoard.width = window.innerWidth;
 shooterBoard.height = window.innerHeight - 5 * grid;
+
+
+//player follows mouse
+//reminder for self: Math.atan2(y,x)
+document.getElementById('shooter-board').addEventListener('mousemove', (mouse) => {
+    let player = document.getElementById('shooter-player');
+    let boundRect = player.getBoundingClientRect();
+    let playerCenter = {
+        x: boundRect.left + boundRect.width/2,
+        y: boundRect.top + boundRect.height/2
+    };
+    let angle = Math.atan2(mouse.y - shooterBoard.height/2, mouse.x - shooterBoard.width/2) * (180 / Math.PI);
+    player.style.transform = 'rotate(' + (angle + 50) + 'deg)';
+    
+})
+
+class Projectile {
+    constructor() {
+        
+    }
+}

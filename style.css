@@ -135,9 +135,23 @@ html {
     background-color: rgba(230, 180, 180, 0.493);
 }
 /*end of snake styling*/
+#shooter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 #shooter-board {
     background-color: black;
 }
 
+#shooter-player {
+    display: '';
+    border: 1px solid white;
+    position: absolute;
+    height: calc(2vw + 25px);
+    width: calc(2vw + 25px);
+    border-radius: calc(2vw + 25px) 0px calc(2vw + 25px) calc(2vw + 25px);
+}
 
 
