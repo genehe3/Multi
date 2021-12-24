@@ -17,7 +17,7 @@ const randCol = () => {
     //use variables for this: round(random()*255), which becomes: r(rr()*rrr)
     return 'rgba(' + r(rr()*rrr) + ',' + r(rr()*rrr) + ',' + r(rr()*rrr) + ',' + rr() + ')'
 }
-//individual scripts for each 'page' 
+//individual scripts for each 'page'
 //first: calculator
 //This version will use a grid system, allowing for easier positionion of buttons
 //and even an adjustable answer area 'size'
@@ -38,7 +38,7 @@ const number = button => {
     } else {
         bottomText.innerHTML = bottomText.innerHTML + button;
     }
-} 
+}
 
 //updates display for OPERATORS
 const operator = button => {
@@ -62,7 +62,7 @@ const negativeOp = button => {
     }
 }
 
-//updates display when CLEARING 
+//updates display when CLEARING
 const clearIt = () => {
     topText.innerHTML = '';
     bottomText.innerHTML = '';
@@ -133,7 +133,7 @@ const draw = (x, y) => {
     if (snakeHead[0] === fruitPos[0] && snakeHead[1] === fruitPos[1]) {
         sScore++;
         length++;
-        fruit = false; 
+        fruit = false;
         cSna.clearRect(fruitPos[0], fruitPos[1], grid, grid)
         cSna.fillStyle = 'rgba(255,200,0,0.70)';
         cSna.fillRect(fruitPos[0], fruitPos[1], grid, grid);
@@ -263,7 +263,7 @@ document.getElementById('snake-start').addEventListener('click', () => {
 })
 
 document.getElementById('snake-pause').addEventListener('click', () => {
-    if (paused === false) {    
+    if (paused === false) {
         document.getElementById('snake-pause').innerHTML = 'RESUME'
         document.getElementById('snake-start').innerHTML = 'PAUSED'
         paused = true;
@@ -293,7 +293,7 @@ document.getElementById('snake-settings').addEventListener('click', () => {
         document.getElementById('snake-settings').innerHTML = 'RETURN'
         bruh = true
     }
-  
+
 })
 
 document.getElementById('random-color').addEventListener('click', () => {
@@ -375,8 +375,15 @@ document.addEventListener('keydown', key => {
 let shooterBoard = document.getElementById('shooter-board')
 let cSho = shooterBoard.getContext('2d');
 shooterBoard.width = window.innerWidth;
-shooterBoard.height = window.innerHeight - 5 * grid;
+shooterBoard.height = window.innerHeight - 0 * grid;
 
+let enemies = [];
+let projectiles = [];
+let particles = [];
+let shOver = false
+let looping = false
+let shoLoop
+let spawnTimer = 700
 
 //player follows mouse
 //reminder for self: Math.atan2(y,x)
@@ -388,12 +395,168 @@ document.getElementById('shooter-board').addEventListener('mousemove', (mouse) =
         y: boundRect.top + boundRect.height/2
     };
     let angle = Math.atan2(mouse.y - shooterBoard.height/2, mouse.x - shooterBoard.width/2) * (180 / Math.PI);
-    player.style.transform = 'rotate(' + (angle + 50) + 'deg)';
-    
+    player.style.transform = 'rotate(' + (angle + 45) + 'deg)';
+
 })
 
+const shoOver = () => {
+    shOver = true;
+    console.log('over!')
+    cancelAnimationFrame(shoLoop)
+    cSho.clearRect(0,0,shooterBoard.width, shooterBoard.height)
+    cSho.clearRect(0,0,shooterBoard.width, shooterBoard.height)
+}
+
 class Projectile {
-    constructor() {
-        
+    constructor(x, y, radius, velocity, color) {
+        this.x = x
+        this.y = y
+        this.radius = radius
+        this.velocity = velocity
+        this.color = color
+    }
+
+    draw() {
+        cSho.fillStyle = this.color
+        cSho.beginPath()
+        cSho.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
+        cSho.fill()
+    }
+
+    update() {
+        this.x = this.x + this.velocity.x * 4
+        this.y = this.y + this.velocity.y * 4
+        this.draw()
     }
 }
+
+class Enemy {
+    constructor(x, y, radius, velocity, color) {
+        this.x = x
+        this.y = y
+        this.radius = radius
+        this.velocity = velocity
+        this.color = color
+    }
+
+    draw() {
+        cSho.fillStyle = this.color
+        cSho.beginPath()
+        cSho.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
+        cSho.fill()
+    }
+
+    update() {
+        this.x = this.x + this.velocity.x * 2
+        this.y = this.y + this.velocity.y * 2
+        this.draw()
+    }
+}
+class Particle {
+    constructor(x, y, radius, velocity, color) {
+        this.x = x
+        this.y = y
+        this.radius = radius
+        this.velocity = velocity
+        this.color = color
+    }
+
+    draw() {
+        cSho.fillStyle = this.color
+        cSho.beginPath()
+        cSho.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
+        cSho.fill()
+    }
+
+    update() {
+        this.x = this.x + this.velocity.x * 2
+        this.y = this.y + this.velocity.y * 2
+        this.draw()
+    }
+}
+
+document.getElementById('shooter').addEventListener('mousedown', mouse => {
+    let angle = Math.atan2(mouse.clientY - shooterBoard.height/2, mouse.clientX - shooterBoard.width/2)
+    let velocity = {
+        x: Math.cos(angle) * 1,
+        y: Math.sin(angle) * 1
+    }
+    projectiles.push(new Projectile(shooterBoard.width / 2 + velocity.x * 50, shooterBoard.height / 2 + velocity.y * 50, 10, velocity, "white"))
+})
+
+const loop = () => {
+    shoLoop = requestAnimationFrame(loop);
+    if (shOver === true) {
+        return;
+    } else {
+        looping = true;
+        cSho.fillStyle =  'rgba(0,0,0,0.25)'
+        cSho.fillRect(0, 0, shooterBoard.width, shooterBoard.height);
+        //creates a 'fade' effect everytime this loop is called
+        particles.forEach((part, index) => {
+            part.update();
+            if (part.x - part.radius <= 0 || part.x + part.radius >= shooterBoard.width || part.y - part.radius <= 0 || part.y + part.radius >= shooterBoard.height) {
+                particles.splice(index, 1);
+            }
+        })
+        projectiles.forEach((pro, index) => {
+            pro.update();
+            //removes projectiles when it goes off screen
+            if (pro.x - pro.radius <= 0 || pro.x + pro.radius >= shooterBoard.width || pro.y - pro.radius <= 0 || pro.y + pro.radius >= shooterBoard.height) {
+                projectiles.splice(index, 1);
+                console.log(projectiles)
+            }
+        })
+        enemies.forEach((enem, index) => {
+            enem.update();
+            let dist = Math.hypot(shooterBoard.width/2 - enem.x, shooterBoard.height/2 - enem.y)
+            //gameover on player contact
+            if (dist - 15 - enem.radius < 1) {
+                shoOver()
+            }
+            projectiles.forEach((proj, pindex) => {
+                let space = Math.hypot(proj.x - enem.x, proj.y - enem.y)
+                if (space - enem.radius - proj.radius < 0.3) {
+                    for (let i = 0; i < Math.floor(enem.radius/3.123); i++) {
+                        particles.push(new Particle(proj.x, proj.y, 1.5, {x: Math.random() * 3 - 1.5, y: Math.random() * 3 - 1.5}, enem.color))
+                    } 
+                    setTimeout(()=> {
+                        enemies.splice(index,1)
+                        projectiles.splice(pindex, 1)
+                    })
+                }
+            })
+
+        })
+    }
+}
+loop();
+
+//function for spawning enemies
+setInterval(()=> {
+    let ranRad = Math.random() * 35 + 30
+    let randomX;
+    let randomY;
+    if (Math.random() < 0.5) {
+        randomX = Math.random() < 0.5 ? 0 - ranRad : shooterBoard.width + ranRad;
+        randomY = Math.random() * shooterBoard.height;
+    } else {
+      randomX = Math.random() * shooterBoard.width;
+      randomY = Math.random() < 0.5 ? 0 - ranRad : shooterBoard.height + ranRad;
+    }
+
+    let angle = Math.atan2(shooterBoard.height/2  - randomY, shooterBoard.width/2 - randomX)
+    let velocity = {
+        x: Math.cos(angle) * .75,
+        y: Math.sin(angle) * .75
+    }
+
+    if (active === 'shooter') {
+        enemies.push(new Enemy(randomX, randomY, ranRad, velocity, randCol()))
+    } else {
+        return
+    }   
+}, spawnTimer)
+
+
+
