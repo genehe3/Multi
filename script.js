@@ -17,6 +17,11 @@ const randCol = () => {
     //use variables for this: round(random()*255), which becomes: r(rr()*rrr)
     return 'rgba(' + r(rr()*rrr) + ',' + r(rr()*rrr) + ',' + r(rr()*rrr) + ',' + rr() + ')'
 }
+
+const randColNoA = () => {
+    let r = Math.round, rr = Math.random, rrr = 255;
+    return 'rgba(' + r(rr()*rrr) + ',' + r(rr()*rrr) + ',' + r(rr()*rrr) + ', 1)'
+}
 //individual scripts for each 'page'
 //first: calculator
 //This version will use a grid system, allowing for easier positionion of buttons
@@ -375,15 +380,19 @@ document.addEventListener('keydown', key => {
 let shooterBoard = document.getElementById('shooter-board')
 let cSho = shooterBoard.getContext('2d');
 shooterBoard.width = window.innerWidth;
-shooterBoard.height = window.innerHeight - 0 * grid;
+shooterBoard.height = window.innerHeight - 2 * grid;
 
 let enemies = [];
 let projectiles = [];
 let particles = [];
-let shOver = false
+let shOver = true
 let looping = false
 let shoLoop
 let spawnTimer = 700
+let projVelMulti = 4
+let partVelMulti = 1
+let enemVelMulti = 1
+let score = 0
 
 //player follows mouse
 //reminder for self: Math.atan2(y,x)
@@ -399,12 +408,29 @@ document.getElementById('shooter-board').addEventListener('mousemove', (mouse) =
 
 })
 
+document.getElementById('shooter-start').addEventListener('click', () => {
+    shOver = false;
+    document.getElementById('shooter-player').style.display = 'block'
+    document.getElementById('contained-container').style.display = 'none'
+    cSho.clearRect(0, 0, shooterBoard.width, shooterBoard.height)
+    if (looping === false) {
+        looping = true;
+        loop();
+    }
+
+})
 const shoOver = () => {
     shOver = true;
     console.log('over!')
-    cancelAnimationFrame(shoLoop)
     cSho.clearRect(0,0,shooterBoard.width, shooterBoard.height)
     cSho.clearRect(0,0,shooterBoard.width, shooterBoard.height)
+    document.getElementById('contained-container').style.display = 'flex'
+    document.getElementById('shooter-player').style.display = 'none'
+    particles = []
+    enemies = []
+    projectiles = []
+    score = 0
+
 }
 
 class Projectile {
@@ -459,6 +485,7 @@ class Particle {
         this.radius = radius
         this.velocity = velocity
         this.color = color
+        this.direct = 1
     }
 
     draw() {
@@ -469,13 +496,13 @@ class Particle {
     }
 
     update() {
-        this.x = this.x + this.velocity.x * 2
-        this.y = this.y + this.velocity.y * 2
+        this.x = this.x + this.velocity.x * 2 * this.direct
+        this.y = this.y + this.velocity.y * 2 * this.direct
         this.draw()
     }
 }
 
-document.getElementById('shooter').addEventListener('mousedown', mouse => {
+shooterBoard.addEventListener('mousedown', mouse => {
     let angle = Math.atan2(mouse.clientY - shooterBoard.height/2, mouse.clientX - shooterBoard.width/2)
     let velocity = {
         x: Math.cos(angle) * 1,
@@ -490,14 +517,19 @@ const loop = () => {
         return;
     } else {
         looping = true;
-        cSho.fillStyle =  'rgba(0,0,0,0.25)'
+        cSho.fillStyle =  'rgba(20,0,0,0.25)'
         cSho.fillRect(0, 0, shooterBoard.width, shooterBoard.height);
         //creates a 'fade' effect everytime this loop is called
+        document.getElementById('shooter-score').innerHTML = `SCORE: ${score}`
         particles.forEach((part, index) => {
             part.update();
             if (part.x - part.radius <= 0 || part.x + part.radius >= shooterBoard.width || part.y - part.radius <= 0 || part.y + part.radius >= shooterBoard.height) {
                 particles.splice(index, 1);
             }
+            let partDist = Math.hypot(shooterBoard.width/2 - part.x, shooterBoard.height/2 - part.y)
+            if (partDist - 30 - part.radius < 1) {
+                part.direct = part.direct * -1;
+      }
         })
         projectiles.forEach((pro, index) => {
             pro.update();
@@ -517,6 +549,7 @@ const loop = () => {
             projectiles.forEach((proj, pindex) => {
                 let space = Math.hypot(proj.x - enem.x, proj.y - enem.y)
                 if (space - enem.radius - proj.radius < 0.3) {
+                    score ++
                     for (let i = 0; i < Math.floor(enem.radius/3.123); i++) {
                         particles.push(new Particle(proj.x, proj.y, 1.5, {x: Math.random() * 3 - 1.5, y: Math.random() * 3 - 1.5}, enem.color))
                     } 
@@ -530,7 +563,10 @@ const loop = () => {
         })
     }
 }
-loop();
+
+const unloop = () => {
+    cancelAnimationFrame(shoLoop)
+}
 
 //function for spawning enemies
 setInterval(()=> {
@@ -551,12 +587,14 @@ setInterval(()=> {
         y: Math.sin(angle) * .75
     }
 
-    if (active === 'shooter') {
-        enemies.push(new Enemy(randomX, randomY, ranRad, velocity, randCol()))
+    if (active === 'shooter' && shOver === false) {
+        enemies.push(new Enemy(randomX, randomY, ranRad, velocity, randColNoA()))
     } else {
         return
     }   
 }, spawnTimer)
+
+
 
 
 
