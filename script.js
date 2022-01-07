@@ -425,6 +425,7 @@ const shoOver = () => {
     cSho.clearRect(0,0,shooterBoard.width, shooterBoard.height)
     cSho.clearRect(0,0,shooterBoard.width, shooterBoard.height)
     document.getElementById('contained-container').style.display = 'flex'
+    document.getElementById('shooter-state').innerHTML = `GOOD JOB. HIGHSCORE:${score}`
     document.getElementById('shooter-player').style.display = 'none'
     particles = []
     enemies = []
@@ -586,12 +587,17 @@ setInterval(()=> {
         x: Math.cos(angle) * .75,
         y: Math.sin(angle) * .75
     }
+    if (active !== 'shooter') {
+        shoOver();
+    }
 
     if (active === 'shooter' && shOver === false) {
         enemies.push(new Enemy(randomX, randomY, ranRad, velocity, randColNoA()))
     } else {
         return
     }   
+
+
 }, spawnTimer)
 
 
