@@ -22,7 +22,20 @@
     <div id="content">
         <div id="home" class="tabcontent">
             <h1 id="home-welcome">Welcome!</h1>
-            <a href="https://github.com/genehe3/Portfolie" id="">Source Code!</a>
+            <a href="https://github.com/genehe3/Portfolie" id="home-source">Source Code!</a>
+            <section class="container">
+                <div id="toolbar">
+                    <h1>DRAW!</h1>
+                    <label for="stroke">Stroke</label>
+                    <input id="stroke" name='stroke' type="color">
+                    <label for="lineWidth">Line Width</label>
+                    <input id="lineWidth" name='lineWidth' type="number" value="5">
+                    <button id="clear" >Clear</button>
+                </div>
+                <div>
+                    <canvas id="home-canvas"></canvas>
+                </div>
+            </section>
         </div>
         <div id="calc" class="tabcontent">
             <div id="calculator">

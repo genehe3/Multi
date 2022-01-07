@@ -14,7 +14,66 @@ document.getElementById('home-tab').click();//sets default page (home) on load
 document.getElementById('home').style.width=window.innerWidth;
 document.getElementById('home').style.height=window.innerHeight
 
+let tool  = document.getElementById('toolbar')
+console.log(tool)
+let hcanvas = document.getElementById('home-canvas')
+let htx = hcanvas.getContext('2d')
 
+const canvasOffsetX = hcanvas.offsetLeft;
+const canvasOffsetY = hcanvas.offsetTop;
+
+hcanvas.width = window.innerWidth - canvasOffsetX;
+hcanvas.height = window.innerHeight - canvasOffsetY;
+
+let painting = false;
+let lineW = 5;
+let startX;
+let startY;
+
+tool.addEventListener('click', e => {
+    if (e.target.id === 'clear') {
+        htx.clearRect(0,0,hcanvas.width,hcanvas.height)
+        console.log('cleared!')
+    }
+})
+
+tool.addEventListener('change', e => {
+    if (e.target.id === 'stroke') {
+        htx.strokeStyle = e.target.value;
+    }
+
+    if (e.target.id === 'lineWidth') {
+        lineW = e.target.value;
+    }
+})
+
+const hdraw = (e) => {
+    if(painting === false) {
+        return
+    }
+
+    htx.lineWidth = lineW;
+    htx.lineCap = 'round'
+
+    htx.lineTo(e.layerX - canvasOffsetX , e.layerY - canvasOffsetY)
+    htx.stroke();
+
+}
+
+hcanvas.addEventListener('mousedown', e => {
+    painting = true;
+    startX = e.clientX;
+    startY = e.clientY;
+    console.log(canvasOffsetX, canvasOffsetY)
+})
+
+hcanvas.addEventListener('mouseup', e => {
+    painting = false;
+    htx.stroke();
+    htx.beginPath();
+})
+
+hcanvas.addEventListener('mousemove', hdraw)
 
 
 

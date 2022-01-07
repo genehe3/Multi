@@ -212,3 +212,45 @@ html {
     font-family: 'Quicksand', sans-serif;
 }
 
+#home-source {
+    color: rgb(159, 152, 224);
+}
+
+#home-canvas {
+    background-color: lightblue;
+}
+
+#toolbar {
+    display: flex;
+    flex-direction: column;
+    font-family: 'Quicksand', sans-serif;
+    color: white;
+    width: 6vw;
+}
+
+#toolbar * {
+    margin-bottom: 10px;
+}
+
+#toolbar label {
+    font-size: 12px;
+    font-family: 'Quicksand', sans-serif;
+}
+
+#toolbar input {
+    width: 100%;
+    font-family: 'Quicksand', sans-serif;
+}
+
+#toolbar button {
+    background-color: burlywood;
+    border: none;
+    color:white;
+    padding: 2px;
+}
+
+.container {
+    display: flex;
+    height: 100%;
+    width: 100%;
+}
