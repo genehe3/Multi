@@ -10,7 +10,14 @@ const switchTab = tab => {
     active = tab;
     console.log(active)
 } //tab-switching function, working
-document.getElementById('shooter-tab').click();//sets default page (home) on load
+document.getElementById('home-tab').click();//sets default page (home) on load
+document.getElementById('home').style.width=window.innerWidth;
+document.getElementById('home').style.height=window.innerHeight
+
+
+
+
+
 //function for random color (rgba) ==> rgba(0-255, 0-255, 0-255, 0-1)
 const randCol = () => {
     let r = Math.round, rr = Math.random, rrr = 255;
@@ -588,7 +595,11 @@ setInterval(()=> {
         y: Math.sin(angle) * .75
     }
     if (active !== 'shooter') {
-        shoOver();
+        if (shOver === false) {
+            shoOver();
+        } else {
+            return
+        }
     }
 
     if (active === 'shooter' && shOver === false) {
