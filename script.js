@@ -269,7 +269,7 @@ const sLoop = () => {
     snakeHead.shift()
     snakeHead.shift()
     if (paused === true) {
-        document.getElementById('snake-start').innerHTML = `HIGHSCORE: ${sScore} CLICK TO RESTART`
+        document.getElementById('snake-start').innerHTML = `SCORE: ${sScore} CLICK TO RESTART`
     } else {
         document.getElementById('snake-start').innerHTML = `SCORE: ${sScore}`
     }
@@ -306,7 +306,7 @@ document.getElementById('snake-start').addEventListener('click', () => {
             document.getElementById('random-color').style.display = 'none'
             clearInterval(sInterval);
             clearInterval(fInterval);
-            document.getElementById('snake-start').innerHTML = `HIGHSCORE: ${sScore} RESTART`
+            document.getElementById('snake-start').innerHTML = `SCORE: ${sScore} RESTART`
             console.log('GAME OVER!')
         }
         let sInterval = setInterval(()=> {
